@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Me - My Portfolio{% endblock %}
+
+{% block content %}
+<section class="about-page">
+    <div class="container">
+        <h1 class="page-title">About Me</h1>
+        
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Who am I?</h2>
+                <p>I'm a passionate Computer Science student with a love for creating innovative web solutions. My journey in tech started when I built my first website in high school, and since then, I've been hooked on the endless possibilities of web development.</p>
+                
+                <h2>Education</h2>
+                <div class="education-item">
+                    <h3>Bachelor of Science in Computer Science</h3>
+                    <p class="institution">University Name</p>
+                    <p class="date">2021 - Present</p>
+                    <p>Current GPA: 3.8/4.0</p>
+                </div>
+                
+                <h2>Experience</h2>
+                <div class="experience-item">
+                    <h3>Web Development Intern</h3>
+                    <p class="company">Tech Company Name</p>
+                    <p class="date">Summer 2023</p>
+                    <ul>
+                        <li>Developed responsive web applications using Django and React</li>
+                        <li>Collaborated with senior developers on various projects</li>
+                        <li>Implemented new features and fixed bugs</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="skills-section">
+                <h2>Technical Skills</h2>
+                <div class="skills-categories">
+                    <div class="skill-category">
+                        <h3>Frontend</h3>
+                        <ul>
+                            <li>HTML5 & CSS3</li>
+                            <li>JavaScript</li>
+                            <li>React</li>
+                            <li>Bootstrap</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Backend</h3>
+                        <ul>
+                            <li>Python</li>
+                            <li>Django</li>
+                            <li>Node.js</li>
+                            <li>PHP</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Database</h3>
+                        <ul>
+                            <li>MySQL</li>
+                            <li>PostgreSQL</li>
+                            <li>MongoDB</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Tools</h3>
+                        <ul>
+                            <li>Git & GitHub</li>
+                            <li>VS Code</li>
+                            <li>Figma</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

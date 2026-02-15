@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - My Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text animate__animated">
+                <h1>Hi, I'm <span class="highlight">John Doe</span></h1>
+                <h2>Computer Science Student & Developer</h2>
+                <p>I create beautiful and responsive websites with modern technologies</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'projects' %}" class="btn btn-primary">View My Work</a>
+                    <a href="{% url 'contact' %}" class="btn btn-secondary">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/hero-image.svg" alt="Developer">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="skills">
+    <div class="container">
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-grid">
+            {% for skill in skills %}
+            <div class="skill-card">
+                <h3>{{ skill.name }}</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ skill.percentage }}%"></div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No skills added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="featured-projects">
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                <img src="images/project-placeholder.jpg" alt="{{ project.title }}">
+                {% endif %}
+                <div class="project-info">
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description|truncatechars:100 }}</p>
+                    <div class="project-tech">
+                        {% for tech in project.technologies.split %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="project-links">
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        {% endif %}
+                        {% if project.live_link %}
+                        <a href="{{ project.live_link }}" target="_blank"><i class="fas fa-external-link-alt"></i> Live</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No projects added yet.</p>
+            {% endfor %}
+        </div>
+        <div class="view-all">
+            <a href="{% url 'projects' %}" class="btn btn-outline">View All Projects</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

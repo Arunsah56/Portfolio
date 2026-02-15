@@ -1,3 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Project, Skill, Contact  # Make sure these models exist
 
-# Create your views here.
+def home(request):
+    # Try to get projects, but handle if table doesn't exist yet
+    try:
+        projects = Project.objects.all()[:3]
+    except:
+        projects = []
+    
+    try:
+        skills = Skill.objects.all()
+    except:
+        skills = []
+    
+    context = {
+        'projects': projects,
+        'skills': skills,
+    }
+    return render(request, 'home.html', context)  # Changed path
+
+def projects(request):
+    try:
+        projects = Project.objects.all().order_by('-date_created')
+    except:
+        projects = []
+    return render(request, 'projects.html', {'projects': projects})
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        
+        try:
+            Contact.objects.create(
+                name=name,
+                email=email,
+                message=message
+            )
+            messages.success(request, 'Your message has been sent successfully!')
+        except:
+            messages.error(request, 'There was an error sending your message.')
+        
+        return redirect('contact')
+    
+    return render(request, 'contact.html')
+
+def about(request):
+    try:
+        skills = Skill.objects.all()
+    except:
+        skills = []
+    return render(request, 'about.html', {'skills': skills})
