@@ -15,5 +15,7 @@ class SkillAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'date_sent')
-    readonly_fields = ('date_sent',)
+    list_display = ('name', 'email')
+    readonly_fields = ()
+
+    

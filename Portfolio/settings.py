@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'home',
 ]
 
@@ -132,4 +132,4 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_USE_TLS=True
 EMAIL_PORT=587
 EMAIL_HOST_USER='saharun2056@gmail.com'
-EMAIL_HOST_PASSWORD='zyhv oxoi uetx xmbc'
+EMAIL_HOST_PASSWORD='dbyc fjqw svid lrny'

@@ -74,86 +74,239 @@
                 </div>
             </div>
             
-            <!-- Contact Form -->
-            <div class="contact-form-container">
-                <form method="POST" action="{% url 'contact' %}" class="contact-form">
-                    {% csrf_token %}
-                    
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    
-                    <h2>Send Me a Message</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Your Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" placeholder="What's this about?">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Your Message</label>
-                        <textarea id="message" name="message" rows="6" placeholder="Type your message here..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary submit-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+            
+            <div class="container_send_mail" style="
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 40px;
+    background: linear-gradient(135deg, #2f3965 0%, #764ba2 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.5s ease-out;
+">
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 80px; }
+        }
+        /* Style for form paragraphs */
+        .container_send_mail form p {
+            margin: 0 0 20px 0;
+            position: relative;
+        }
+        /* Style for form labels */
+        .container_send_mail form label {
+            display: block;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        /* Required field indicator */
+        .container_send_mail form label[for$="name"]::after,
+        .container_send_mail form label[for$="email"]::after,
+        .container_send_mail form label[for$="subject"]::after,
+        .container_send_mail form label[for$="message"]::after {
+            content: '*';
+            color: #ff4757;
+            margin-left: 5px;
+            font-size: 1.2em;
+        }
+        /* Style for input fields */
+        .container_send_mail form input,
+        .container_send_mail form textarea,
+        .container_send_mail form select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            font-size: 1em;
+            color: #333;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        /* Focus state */
+        .container_send_mail form input:focus,
+        .container_send_mail form textarea:focus,
+        .container_send_mail form select:focus {
+            outline: none;
+            border-color: #8c8874;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        /* Hover state */
+        .container_send_mail form input:hover,
+        .container_send_mail form textarea:hover,
+        .container_send_mail form select:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: #fff;
+        }
+        /* Textarea specific */
+        .container_send_mail form textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        /* Placeholder styles */
+        .container_send_mail form input::placeholder,
+        .container_send_mail form textarea::placeholder,
+        .container_send_mail form select::placeholder {
+            color: #999;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .container_send_mail form input:focus::placeholder,
+        .container_send_mail form textarea:focus::placeholder,
+        .container_send_mail form select:focus::placeholder {
+            opacity: 0.4;
+        }
+        /* Error list styles */
+        .container_send_mail form .errorlist {
+            list-style: none;
+            padding: 10px 15px;
+            margin: 10px 0 0;
+            background: rgba(41, 24, 26, 0.2);
+            border-left: 4px solid #ff4757;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9em;
+            animation: slideIn 0.3s ease-out;
+        }
+        .container_send_mail form .errorlist li {
+            margin: 5px 0;
+        }
+        /* Help text styles */
+        .container_send_mail form .helptext {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
 
-<!-- Map Section (Optional) -->
-<section class="map-section">
-    <div class="container">
-        <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-73.98510768458417!3d40.75889697932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
-                width="100%" 
-                height="400" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy">
-            </iframe>
-        </div>
-    </div>
-</section>
-{% endblock %}
+    <h2 style="
+        color: #fff;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2.5em;
+        font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        padding-bottom: 15px;
+    ">
+        Contact Us
+    </h2>
 
-{% block extra_js %}
-<script>
-    // Contact form additional validation
-    document.addEventListener('DOMContentLoaded', function() {
-        const contactForm = document.querySelector('.contact-form');
+    <div style="
+        width: 80px;
+        height: 4px;
+        background: #ffd700;
+        border-radius: 2px;
+        margin: -20px auto 30px auto;
+        animation: expandWidth 0.8s ease-out;
+    "></div>
+
+    <form method="POST" style="
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    ">
+        {% csrf_token %}
+        {{ form.as_p }}
         
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const message = document.getElementById('message').value.trim();
+        <button type="submit" class="btn btn-primary submit-btn" style="
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            outline: none;
+        " onmouseover="this.style.background='linear-gradient(135deg, #ffed4e 0%, #ffd700 100%)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(255, 215, 0, 0.4)'" 
+        onmouseout="this.style.background='linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255, 215, 0, 0.3)'"
+        onmousedown="this.style.transform='translateY(-1px)'"
+        onmouseup="this.style.transform='translateY(-3px)'">
+            <i class="fas fa-paper-plane" style="
+                font-size: 1.1em;
+                transition: transform 0.3s ease;
+            " onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'"></i> 
+            Send Message
+        </button>
+    </form>
+</div>
+
+<!-- Add loading state JavaScript -->
+<script>
+    (function() {
+        // Add loading state to form
+        const form = document.querySelector('.container_send_mail form');
+        const submitBtn = document.querySelector('.container_send_mail button[type="submit"]');
+        
+        if (form && submitBtn) {
+            form.addEventListener('submit', function(e) {
+                submitBtn.classList.add('loading');
+                submitBtn.style.position = 'relative';
+                submitBtn.style.color = 'transparent';
                 
-                if (!name || !email || !message) {
-                    e.preventDefault();
-                    showNotification('Please fill in all required fields', 'error');
-                }
+                // Create loading spinner
+                const spinner = document.createElement('span');
+                spinner.style.position = 'absolute';
+                spinner.style.top = '50%';
+                spinner.style.left = '50%';
+                spinner.style.width = '20px';
+                spinner.style.height = '20px';
+                spinner.style.margin = '-10px 0 0 -10px';
+                spinner.style.border = '3px solid rgba(51, 51, 51, 0.3)';
+                spinner.style.borderTopColor = '#333';
+                spinner.style.borderRadius = '50%';
+                spinner.style.animation = 'spin 1s linear infinite';
+                
+                submitBtn.appendChild(spinner);
             });
         }
-    });
+    })();
 </script>
-{% endblock %}
+
+<!-- Required Font Awesome for icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        </div>
+    </div>
+</section>
+{% endblock %} 
+
+
