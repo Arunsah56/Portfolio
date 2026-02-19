@@ -27,6 +27,9 @@ def projects(request):
         projects = []
     return render(request, 'projects.html', {'projects': projects})
 
+from django.core.mail import send_mail   # ⭐ ADDED IMPORT
+from django.conf import settings   
+
 def contact(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -38,6 +41,12 @@ def contact(request):
                 name=name,
                 email=email,
                 message=message
+            )
+            send_mail(
+                subject=f'New Contact Message from {name}',
+                message=f"You received a new contact message: Name: {name} Email: {email} Message: {message}",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_HOST_USER],  # sends to YOU
             )
             messages.success(request, 'Your message has been sent successfully!')
         except:
