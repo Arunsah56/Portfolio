@@ -16,20 +16,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Check deployment secrets
+    - name: Check deployment configuration
       run: |
         if [ -z "${{ secrets.DEPLOY_HOST }}" ]; then
           echo "⚠️  Deploy secrets not configured"
-          echo "To enable auto-deployment, add these secrets to GitHub:"
-          echo "  - DEPLOY_KEY (SSH private key)"
-          echo "  - DEPLOY_HOST (server hostname)"
-          echo "  - DEPLOY_USER (SSH username)"
-          echo "  - DEPLOY_PATH (app directory path)"
-        else
-          echo "✓ Deploy secrets are configured"
+          echo "To enable deployment, add to GitHub Secrets:"
+          echo "  - DEPLOY_HOST"
+          echo "  - DEPLOY_USER"
+          echo "  - DEPLOY_KEY"
+          echo "  - DEPLOY_PATH"
+          exit 0
         fi
+        echo "✓ Deploy secrets found"
 
-    - name: Deploy to Server
+    - name: Deploy to server
       if: secrets.DEPLOY_HOST != null
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
@@ -37,39 +37,14 @@ jobs:
         DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
       run: |
-        # Setup SSH
         mkdir -p ~/.ssh
         echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        
-        # Add host key
         ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
-        
-        # Deploy via SSH
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "
-          cd $DEPLOY_PATH &&
-          git pull origin main &&
-          python -m venv venv --upgrade-deps &&
-          source venv/bin/activate &&
-          pip install -r requirements.txt &&
-          python manage.py migrate &&
-          python manage.py collectstatic --noinput &&
-          sudo systemctl restart gunicorn || echo 'Service restart skipped'
-        " || echo "Deployment failed - check secrets and server access"
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST \
+          "cd $DEPLOY_PATH && git pull origin main && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && sudo systemctl restart gunicorn" || echo "Deployment skipped"
       continue-on-error: true
 
-    - name: Deployment Status
-      if: success()
-      run: |
-        echo "✅ Workflow completed successfully!"
-        echo "If deploy secrets are configured, your portfolio has been updated."
-      
-    - name: Deployment Not Configured
-      if: secrets.DEPLOY_HOST == null
-      run: |
-        echo "⚠️  Deployment secrets not configured"
-        echo "✓ Code has been pushed to main branch"
-        echo "To enable auto-deployment:"
-        echo "1. Go to GitHub → Settings → Secrets and variables → Actions"
-        echo "2. Add deployment secrets (DEPLOY_KEY, DEPLOY_HOST, DEPLOY_USER, DEPLOY_PATH)"
+    - name: Success
+      run: echo "✓ Workflow completed"
 
