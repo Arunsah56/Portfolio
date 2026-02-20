@@ -683,6 +683,59 @@ python manage.py test_email --recipient alternate@email.com
 
 ---
 
+## 🐛 Troubleshooting Workflows
+
+If your GitHub Actions workflows are failing, here are solutions:
+
+### ❌ Django Tests Failing
+**Problem**: Tests fail or Python version unsupported
+
+**Solution**:
+1. Ensure Python 3.10+ is used
+2. Check that all dependencies are in `requirements.txt`
+3. Tests are optional - the workflow will continue even if tests don't exist
+4. Add proper test files in `home/tests.py`
+
+### ❌ Django System Checks Failing
+**Problem**: Exit code 1 or "ModuleNotFoundError"
+
+**Solution**:
+1. Workflows now include default environment variables
+2. Add missing variables to `.env` file:
+   ```
+   SECRET_KEY=your-secret-key
+   EMAIL_HOST_USER=your-email@gmail.com
+   EMAIL_HOST_PASSWORD=your-app-password
+   ```
+
+### ❌ Deploy Workflow Not Running
+**Problem**: Deploy steps skipped or fail
+
+**Solution**:
+1. Add deployment secrets to GitHub:
+   - Go to **Settings → Secrets and variables → Actions**
+   - Click **New repository secret**
+   - Add: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_KEY`, `DEPLOY_PATH`
+2. Without secrets, workflow completes successfully but skips deployment
+
+### ✅ How to Check Logs
+1. Go to **Actions** tab on GitHub
+2. Click on failed workflow
+3. Click on the failed job
+4. Expand the step to see error details
+
+### ✅ Manually Re-run a Workflow
+1. Go to **Actions** tab
+2. Select the workflow
+3. Click **Re-run jobs**
+
+### ✅ Disable a Workflow Temporarily
+1. Go to **Actions** → workflow name
+2. Click ⋯ (three dots) → Disable workflow
+3. Re-enable when ready
+
+---
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
