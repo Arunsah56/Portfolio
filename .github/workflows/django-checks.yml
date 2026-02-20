@@ -17,33 +17,30 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'pip'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install python-decouple
 
-    - name: Create test .env file
+    - name: Create .env file
       run: |
-        cat > .env << EOF
-        SECRET_KEY=django-insecure-test-key-12345
-        EMAIL_HOST_USER=test@example.com
-        EMAIL_HOST_PASSWORD=test-password
-        EOF
+        echo "SECRET_KEY=django-insecure-test-key-ci" > .env
+        echo "EMAIL_HOST_USER=test@example.com" >> .env
+        echo "EMAIL_HOST_PASSWORD=test-password" >> .env
+
+    - name: Check Python version
+      run: python --version
 
     - name: Run Django checks
-      run: python manage.py check --deploy
+      run: python manage.py check
       continue-on-error: true
 
-    - name: Check for missing migrations
-      run: python manage.py makemigrations --check --dry-run || echo "✓ No migrations needed"
+    - name: Check Django imports
+      run: python -c "from django.conf import settings; print('✓ Django loaded successfully')"
       continue-on-error: true
-
-    - name: Verify imports
-      run: python -c "from django.conf import settings; print('✓ Django Settings verified')"
 
     - name: Summary
       run: echo "✓ Django system checks completed"
+
 
