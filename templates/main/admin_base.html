@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    (function () {
+        var saved = localStorage.getItem('theme');
+        if (saved) {
+            document.documentElement.setAttribute('data-theme', saved);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    })();
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %} — Arun's Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'main/css/admin.css' %}?v=1">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'admin_dashboard' %}" class="sidebar-brand">
+                    <div class="brand-icon"><i class="fa-solid fa-code"></i></div>
+                    <div>
+                        <div class="brand-text">Arun's Portfolio</div>
+                        <div class="brand-sub">Admin Panel</div>
+                    </div>
+                </a>
+            </div>
+
+            <nav>
+                <div class="nav-label">Main</div>
+                <a href="{% url 'admin_dashboard' %}"
+                    class="nav-item {% if active_tab == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-gauge-high"></i> Dashboard
+                </a>
+
+                <div class="nav-label">Content</div>
+                <a href="{% url 'admin_dashboard' %}#projects"
+                    class="nav-item {% if active_tab == 'projects' %}active{% endif %}">
+                    <i class="fa-solid fa-folder-open"></i> Projects
+                    {% if project_count %}<span class="nav-badge">{{ project_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'admin_dashboard' %}#blogs"
+                    class="nav-item {% if active_tab == 'blogs' %}active{% endif %}">
+                    <i class="fa-solid fa-pen-to-square"></i> Blogs
+                    {% if blog_count %}<span class="nav-badge">{{ blog_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'admin_dashboard' %}#education"
+                    class="nav-item {% if active_tab == 'education' %}active{% endif %}">
+                    <i class="fa-solid fa-graduation-cap"></i> Education
+                    {% if education_count %}<span class="nav-badge">{{ education_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'admin_dashboard' %}#experiences"
+                    class="nav-item {% if active_tab == 'experiences' %}active{% endif %}">
+                    <i class="fa-solid fa-briefcase"></i> Experiences
+                    {% if experience_count %}<span class="nav-badge">{{ experience_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'admin_dashboard' %}#messages"
+                    class="nav-item {% if active_tab == 'messages' %}active{% endif %}">
+                    <i class="fa-solid fa-envelope"></i> Messages
+                    {% if message_count %}<span class="nav-badge">{{ message_count }}</span>{% endif %}
+                </a>
+
+                <div class="nav-label">Settings</div>
+                <a href="{% url 'home' %}" class="nav-item" target="_blank">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Portfolio
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="{% url 'admin_logout' %}" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <button class="hamburger-admin" id="adminHamburger" aria-label="Toggle sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-user">
+                        <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+                        <span>{{ request.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="admin-alert {{ message.tags }}">
+                    <i
+                        class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
+                    {{ message }}
+                    <button class="close-alert" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle for mobile
+        const hamburger = document.getElementById('adminHamburger');
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+        }
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+
+</html>

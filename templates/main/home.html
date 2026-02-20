@@ -1,0 +1,383 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<!-- ===== HERO SECTION ===== -->
+<section class="hero" id="home">
+    <div class="hero-container">
+        <div class="hero-content reveal">
+            <div class="hero-badge">
+                Hi everyone , I'm Arun Sah
+            </div>
+
+            <h1 class="hero-title">
+                <span>Data Engineer Aspirant</span>
+            </h1>
+
+            <p class="hero-description">
+                I'm a passionate developer building real-world web applications,
+                AI-based systems, and dashboards that solve meaningful problems
+                and create impact.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">
+                    Get In Touch <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <a href="{% static 'main/resume/Updated Arun CV.pdf' %}" class="btn btn-outline" download>
+                    Download CV <i class="fa-solid fa-download"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="hero-image reveal">
+            <div class="hero-image-wrapper">
+                <div class="hero-photo-bg">
+                    <img src="{% static 'main/images/profile_image.JPG' %}?v=2" alt="Arun Sah">
+                </div>
+                <div class="hero-blob blob-1"></div>
+                <div class="hero-blob blob-2"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MARQUEE / SERVICES BAR ===== -->
+<section class="marquee-section">
+    <div class="marquee-track">
+        <div class="marquee-content">
+            <div class="marquee-item"><span class="star">*</span> Python Development</div>
+            <div class="marquee-item"><span class="star">*</span> Machine Learning</div>
+            <div class="marquee-item"><span class="star">*</span> Data Analysis & EDA</div>
+            <div class="marquee-item"><span class="star">*</span> Django Web Apps</div>
+            <div class="marquee-item"><span class="star">*</span> DSA & Problem Solving</div>
+            <div class="marquee-item"><span class="star">*</span> System Monitoring Tools</div>
+        </div>
+        <div class="marquee-content" aria-hidden="true">
+            <div class="marquee-item"><span class="star">*</span> Python Development</div>
+            <div class="marquee-item"><span class="star">*</span> Machine Learning</div>
+            <div class="marquee-item"><span class="star">*</span> Data Analysis & EDA</div>
+            <div class="marquee-item"><span class="star">*</span> Django Web Apps</div>
+            <div class="marquee-item"><span class="star">*</span> DSA & Problem Solving</div>
+            <div class="marquee-item"><span class="star">*</span> System Monitoring Tools</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ABOUT SECTION ===== -->
+<section class="section" id="about">
+    <div class="section-header reveal">
+        <span class="section-label">About Me</span>
+        <h2 class="section-title">Know Who I Am</h2>
+    </div>
+
+    <!-- About â€” Professional Layout -->
+    <div class="about-container reveal">
+        <!-- Stats Row -->
+        <div class="about-stats">
+            <div class="about-stat-item">
+                <div class="about-stat-number">6.78</div>
+                <div class="about-stat-label">CGPA</div>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat-item">
+                <div class="about-stat-number">2</div>
+                <div class="about-stat-label">Projects Built</div>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat-item">
+                <div class="about-stat-number">2</div>
+                <div class="about-stat-label">Industry Trainings</div>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat-item">
+                <div class="about-stat-number">3+</div>
+                <div class="about-stat-label">Certificates</div>
+            </div>
+        </div>
+
+        <!-- Bio Text -->
+        <div class="about-bio">
+            <p>
+                I'm a <strong>B.Tech CSE</strong> student at Lovely Professional University,
+                passionate about <strong>Data Science</strong> and building intelligent systems
+                that solve real problems. I've completed industry training in AI & ML through
+                IBM's partnered program and full-stack development with Django.
+            </p>
+            <p>
+                My hands-on experience includes building ML-powered mentor-matching platforms using
+                K-Means and TF-IDF, real-time system monitoring dashboards, and this very portfolio
+                with Django. I hold a <strong>Bronze Badge on CodeChef</strong> and
+                <strong>Silver in Python on HackerRank</strong>.
+            </p>
+        </div>
+
+        <!-- What I Do Cards -->
+        <div class="about-focus-grid">
+            <div class="about-focus-card">
+                <i class="fa-solid fa-brain"></i>
+                <h4>Machine Learning</h4>
+                <p>Scikit-learn, K-Means, Keras, EDA, Feature Engineering</p>
+            </div>
+            <div class="about-focus-card">
+                <i class="fa-solid fa-code"></i>
+                <h4>Web Development</h4>
+                <p>Python, Django, HTML/CSS, JavaScript, REST APIs</p>
+            </div>
+            <div class="about-focus-card">
+                <i class="fa-solid fa-terminal"></i>
+                <h4>Problem Solving</h4>
+                <p>DSA, C++, Competitive Programming, Algorithmic Thinking</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills â€” Technical & Soft Skills Cards -->
+    <div class="skills-cards reveal">
+        <!-- Technical Skills Card -->
+        <div class="skills-card">
+            <div class="skills-card-header">
+                <i class="fa-solid fa-laptop-code"></i>
+                <h3>Technical Skills</h3>
+            </div>
+            <div class="skills-grid">
+                <span class="skill-tag"><i class="fa-brands fa-python"></i> Python</span>
+                <span class="skill-tag"><i class="fa-solid fa-code"></i> Django</span>
+                <span class="skill-tag"><i class="fa-brands fa-html5"></i> HTML/CSS</span>
+                <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+                <span class="skill-tag"><i class="fa-solid fa-database"></i> SQL</span>
+                <span class="skill-tag"><i class="fa-solid fa-robot"></i> AI/ML</span>
+                <span class="skill-tag"><i class="fa-solid fa-server"></i> REST APIs</span>
+                <span class="skill-tag"><i class="fa-brands fa-git-alt"></i> Git</span>
+                <span class="skill-tag"><i class="fa-solid fa-terminal"></i> Data Structures</span>
+                <span class="skill-tag"><i class="fa-solid fa-chart-line"></i> Data Analysis</span>
+            </div>
+        </div>
+
+        <!-- Soft Skills Card -->
+        <div class="skills-card">
+            <div class="skills-card-header">
+                <i class="fa-solid fa-users"></i>
+                <h3>Soft Skills</h3>
+            </div>
+            <div class="skills-grid">
+                <span class="skill-tag soft"><i class="fa-solid fa-lightbulb"></i> Problem Solving</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-people-group"></i> Team Collaboration</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-comments"></i> Communication</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-bolt"></i> Quick Learner</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-clock"></i> Time Management</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-arrows-spin"></i> Adaptability</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-magnifying-glass"></i> Attention to Detail</span>
+                <span class="skill-tag soft"><i class="fa-solid fa-handshake"></i> Leadership</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== EDUCATION SECTION ===== -->
+<section class="section" id="education">
+    <div class="section-header reveal">
+        <span class="section-label">Learning</span>
+        <h2 class="section-title">My Education</h2>
+    </div>
+
+    <div class="experience-grid">
+        {% for edu in educations %}
+        <div class="exp-card reveal">
+            <h3>{{ edu.institution }}</h3>
+            <div class="exp-role">{{ edu.degree }}</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> {{ edu.duration }}</div>
+            <p>{{ edu.description }}</p>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <h3>No education entries yet</h3>
+            <p>Add them from the admin panel.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ===== EXPERIENCE SECTION ===== -->
+<section class="section experience-section" id="experience">
+    <div class="section-header reveal">
+        <span class="section-label">Experience</span>
+        <h2 class="section-title">My Journey So Far</h2>
+    </div>
+
+    <div class="experience-grid">
+        {% for exp in experiences %}
+        <div class="exp-card reveal">
+            <h3>{{ exp.organization }}{% if exp.partner_label %} <span
+                    style="font-size: 0.8rem; color: var(--accent); font-weight: 500;">({{ exp.partner_label
+                    }})</span>{% endif %}</h3>
+            <div class="exp-role">{{ exp.role }}</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> {{ exp.duration }}</div>
+            <p>{{ exp.description }}</p>
+            {% if exp.github_link %}
+            <div style="margin-top: 12px;">
+                <a href="{{ exp.github_link }}" target="_blank"
+                    style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--border); color: var(--text-primary); transition: var(--transition);">
+                    <i class="fa-brands fa-github"></i> View on GitHub
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fa-solid fa-briefcase"></i>
+            <h3>No experiences yet</h3>
+            <p>Add them from the admin panel.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- ===== PROJECTS SECTION ===== -->
+<section class="section" id="projects">
+    <div class="section-header reveal">
+        <span class="section-label">Portfolio</span>
+        <h2 class="section-title">My Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card reveal">
+            <div class="project-card-image">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                <i class="fa-solid fa-code"></i>
+                {% endif %}
+            </div>
+            <div class="project-card-body">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description }}</p>
+
+                <div class="project-tech">
+                    {% for tech in project.tech_stack|split:"," %}
+                    <span>{{ tech }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="project-links">
+                    {% if project.github_link %}
+                    <a href="{{ project.github_link }}" target="_blank">
+                        <i class="fa-brands fa-github"></i> Code
+                    </a>
+                    {% endif %}
+                    {% if project.live_link %}
+                    <a href="{{ project.live_link }}" target="_blank">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fa-solid fa-folder-open"></i>
+            <h3>No projects yet</h3>
+            <p>Add them from the admin panel.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<!-- ===== BLOG SECTION ===== -->
+<section class="section" id="blog">
+    <div class="section-header reveal">
+        <span class="section-label">Blog</span>
+        <h2 class="section-title">Latest Articles</h2>
+    </div>
+
+    <div class="blog-grid">
+        {% for blog in blogs %}
+        <div class="blog-card reveal">
+            <div class="blog-date">
+                <i class="fa-regular fa-calendar"></i> {{ blog.created_at|date:"M d, Y" }}
+            </div>
+            <h3>{{ blog.title }}</h3>
+            <p>{{ blog.content|truncatewords:80 }}</p>
+            <span class="read-more">
+                Read More <i class="fa-solid fa-arrow-right"></i>
+            </span>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <h3>No blog posts yet</h3>
+            <p>Add them from the admin panel.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section class="section contact-section" id="contact">
+    <div class="section-header reveal">
+        <span class="section-label">Get In Touch</span>
+        <h2 class="section-title">Contact Me</h2>
+    </div>
+
+    <div class="contact-grid">
+        <div class="contact-info reveal">
+            <h2>Let's work together!</h2>
+            <p>
+                Have a project in mind or just want to say hi?
+                Feel free to reach out. I'd love to hear from you!
+            </p>
+
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>saharun2056@gmail.com</span>
+                </div>
+                <!-- Clicking on the address redirects the user to Google Maps with the exact location -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Biharsharif+Nalanda+Bihar+803101"
+                    target="_blank" class="contact-item contact-item-link">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Nalanda, biharsharif, Bihar, 803101</span>
+                </a>
+            </div>
+
+            <div class="contact-socials">
+                <span class="social-label">Find me on:</span>
+                <a href="https://github.com/Arunsah56" class="social-icon" target="_blank" aria-label="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="www.linkedin.com/in/arun-sah" class="social-icon" target="_blank"
+                    aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/arun_sah.n/" class="social-icon" target="_blank"
+                    aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+
+        <form class="contact-form reveal" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button type="submit" class="form-submit">
+                Send Message <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

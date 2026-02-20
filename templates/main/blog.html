@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header reveal">
+        <span class="section-label">Blog</span>
+        <h1 class="section-title">Latest Articles</h1>
+    </div>
+
+    <div class="blog-grid">
+        <!-- Blog Post: IBM AI&ML Training Experience -->
+        <div class="blog-card reveal">
+            <div class="blog-date">
+                <i class="fa-regular fa-calendar"></i> Jul 15, 2025
+            </div>
+            <h3>What I Learned During My AI & ML Industry Training with IBM</h3>
+            <p>This summer, I had the incredible opportunity to undergo an industry training program in Artificial
+                Intelligence and Machine Learning at Allsoft Solutions, partnered with IBM. Over two intensive months, I
+                went from understanding basic data preprocessing to building and evaluating full machine learning
+                models. I performed EDA using NumPy and Pandas, trained models like Linear Regression, Decision Trees,
+                K-Means, and Ensemble Methods with Scikit-learn, and applied feature engineering to boost model
+                performance by 20%. This experience gave me a solid foundation in applying AI/ML to real-world problems
+                and solidified my passion for data-driven solutions.</p>
+            <span class="read-more">
+                Read More <i class="fa-solid fa-arrow-right"></i>
+            </span>
+        </div>
+
+        <!-- Blog Post: Winter PEP Training Journey -->
+        <div class="blog-card reveal">
+            <div class="blog-date">
+                <i class="fa-regular fa-calendar"></i> Feb 10, 2026
+            </div>
+            <h3>My Full Stack Journey: From Python Basics to Cloud Deployment</h3>
+            <p>During my Winter PEP training at LPU with Algotutor, I embarked on a comprehensive journey through the
+                Python full-stack ecosystem. Starting with core Python concepts — functions, OOP, exception handling — I
+                quickly progressed to building web applications with Django, creating REST APIs, setting up CI/CD
+                pipelines with GitHub Actions, and containerizing applications with Docker. The most rewarding part was
+                seeing how all these pieces fit together: writing clean Python code, structuring it into a Django
+                project, exposing it via APIs, and deploying it to the cloud. This training transformed my understanding
+                of modern software development workflows.</p>
+            <span class="read-more">
+                Read More <i class="fa-solid fa-arrow-right"></i>
+            </span>
+        </div>
+    </div>
+</section>
+{% endblock %}

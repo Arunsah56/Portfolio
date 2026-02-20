@@ -1,0 +1,46 @@
+{% extends 'main/admin_base.html' %}
+
+{% block title %}{{ form_title }}{% endblock %}
+{% block page_title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+<div class="admin-form-page">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-back" style="margin-bottom:20px;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="form-card">
+        <h2><i class="fa-solid {{ form_icon }}"></i> {{ form_title }}</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="checkbox-wrap">
+                    {{ field }}
+                    <span>{{ field.label }}</span>
+                </div>
+                {% else %}
+                {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                <p class="help-text">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                <p class="error-text">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-check"></i> {{ submit_label|default:"Save" }}
+                </button>
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-back">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

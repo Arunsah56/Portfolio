@@ -1,0 +1,31 @@
+{% extends 'main/admin_base.html' %}
+
+{% block title %}Delete {{ object_name }}{% endblock %}
+{% block page_title %}Delete {{ object_name }}{% endblock %}
+
+{% block content %}
+<div class="admin-form-page">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-back" style="margin-bottom:20px;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="form-card">
+        <div class="delete-confirm">
+            <div class="delete-icon">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3>Delete "{{ object_title }}"?</h3>
+            <p>This action cannot be undone. The {{ object_name }} will be permanently removed.</p>
+            <form method="post">
+                {% csrf_token %}
+                <div style="display:flex; gap:12px; justify-content:center;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i> Yes, Delete
+                    </button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-back">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

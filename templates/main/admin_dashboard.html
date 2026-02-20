@@ -1,0 +1,267 @@
+{% extends 'main/admin_base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Cards -->
+<div class="admin-stats">
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="stat-info">
+            <h3>{{ project_count }}</h3>
+            <p>Projects</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-pen-to-square"></i></div>
+        <div class="stat-info">
+            <h3>{{ blog_count }}</h3>
+            <p>Blog Posts</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="stat-info">
+            <h3>{{ education_count }}</h3>
+            <p>Education</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange"><i class="fa-solid fa-briefcase"></i></div>
+        <div class="stat-info">
+            <h3>{{ experience_count }}</h3>
+            <p>Experiences</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red"><i class="fa-solid fa-envelope"></i></div>
+        <div class="stat-info">
+            <h3>{{ message_count }}</h3>
+            <p>Messages</p>
+        </div>
+    </div>
+</div>
+
+<!-- Projects Section -->
+<div class="admin-section" id="projects">
+    <div class="section-head">
+        <h2><i class="fa-solid fa-folder-open"></i> Projects</h2>
+        <a href="{% url 'admin_add' model_name='project' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Project
+        </a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Tech Stack</th>
+                <th>Order</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.title }}</td>
+                <td>{{ project.tech_stack|truncatewords:6 }}</td>
+                <td>{{ project.order }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'admin_edit' model_name='project' pk=project.pk %}" class="btn btn-sm btn-edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="{% url 'admin_delete' model_name='project' pk=project.pk %}"
+                            class="btn btn-sm btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-table"><i class="fa-solid fa-folder-open"></i>No projects yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Blogs Section -->
+<div class="admin-section" id="blogs">
+    <div class="section-head">
+        <h2><i class="fa-solid fa-pen-to-square"></i> Blog Posts</h2>
+        <a href="{% url 'admin_add' model_name='blog' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Blog
+        </a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for blog in blogs %}
+            <tr>
+                <td>{{ blog.title|truncatewords:8 }}</td>
+                <td>
+                    {% if blog.is_published %}
+                    <span class="badge badge-published">Published</span>
+                    {% else %}
+                    <span class="badge badge-draft">Draft</span>
+                    {% endif %}
+                </td>
+                <td>{{ blog.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'admin_edit' model_name='blog' pk=blog.pk %}" class="btn btn-sm btn-edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="{% url 'admin_delete' model_name='blog' pk=blog.pk %}" class="btn btn-sm btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-table"><i class="fa-solid fa-pen-to-square"></i>No blog posts yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Education Section -->
+<div class="admin-section" id="education">
+    <div class="section-head">
+        <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+        <a href="{% url 'admin_add' model_name='education' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Education
+        </a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Institution</th>
+                <th>Degree</th>
+                <th>Duration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for edu in educations %}
+            <tr>
+                <td>{{ edu.institution }}</td>
+                <td>{{ edu.degree|truncatewords:6 }}</td>
+                <td>{{ edu.duration }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'admin_edit' model_name='education' pk=edu.pk %}" class="btn btn-sm btn-edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="{% url 'admin_delete' model_name='education' pk=edu.pk %}"
+                            class="btn btn-sm btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-table"><i class="fa-solid fa-graduation-cap"></i>No education entries yet
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Experiences Section -->
+<div class="admin-section" id="experiences">
+    <div class="section-head">
+        <h2><i class="fa-solid fa-briefcase"></i> Experiences</h2>
+        <a href="{% url 'admin_add' model_name='experience' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Experience
+        </a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Organization</th>
+                <th>Role</th>
+                <th>Duration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exp in experiences %}
+            <tr>
+                <td>{{ exp.organization }}</td>
+                <td>{{ exp.role|truncatewords:6 }}</td>
+                <td>{{ exp.duration }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'admin_edit' model_name='experience' pk=exp.pk %}" class="btn btn-sm btn-edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="{% url 'admin_delete' model_name='experience' pk=exp.pk %}"
+                            class="btn btn-sm btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-table"><i class="fa-solid fa-briefcase"></i>No experiences yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Contact Messages Section -->
+<div class="admin-section" id="messages">
+    <div class="section-head">
+        <h2><i class="fa-solid fa-envelope"></i> Contact Messages</h2>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in contact_messages %}
+            <tr>
+                <td>{{ msg.name }}</td>
+                <td>{{ msg.email }}</td>
+                <td>{{ msg.message|truncatewords:10 }}</td>
+                <td>{{ msg.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'admin_delete' model_name='contactmessage' pk=msg.pk %}"
+                            class="btn btn-sm btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty-table"><i class="fa-solid fa-envelope"></i>No messages yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

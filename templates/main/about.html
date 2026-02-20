@@ -1,0 +1,122 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ===== ABOUT SECTION ===== -->
+<section class="section">
+    <div class="section-header reveal">
+        <span class="section-label">About Me</span>
+        <h1 class="section-title">Know Who I Am</h1>
+    </div>
+
+    <div class="about-grid">
+        <div class="about-image reveal">
+            <img src="{% static 'main/images/profile.png' %}" alt="Arun Sah"
+                onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=&quot;width:100%;height:400px;background:linear-gradient(135deg,#00C896,#1a1a2e);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:5rem;color:white;&quot;>AK</div>'">
+        </div>
+
+        <div class="about-text reveal">
+            <h2>I'm Arun Sah, a passionate developer</h2>
+            <p>
+                I am a passionate Python and Django developer interested in building
+                real-world web applications, AI-based systems, and dashboards.
+                I have worked on NGO projects related to food security, child rights,
+                and education. My goal is to become a professional software developer.
+            </p>
+            <p>
+                I love turning complex problems into clean, efficient, and user-friendly
+                solutions. When I'm not coding, I'm exploring new technologies and
+                contributing to projects that create real social impact.
+            </p>
+
+            <div class="skills-grid">
+                <span class="skill-tag"><i class="fa-brands fa-python"></i> Python</span>
+                <span class="skill-tag"><i class="fa-solid fa-code"></i> Django</span>
+                <span class="skill-tag"><i class="fa-brands fa-html5"></i> HTML/CSS</span>
+                <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+                <span class="skill-tag"><i class="fa-solid fa-database"></i> SQL</span>
+                <span class="skill-tag"><i class="fa-solid fa-robot"></i> AI/ML</span>
+                <span class="skill-tag"><i class="fa-solid fa-server"></i> REST APIs</span>
+                <span class="skill-tag"><i class="fa-brands fa-git-alt"></i> Git</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== EDUCATION SECTION ===== -->
+<section class="section" id="education">
+    <div class="section-header reveal">
+        <span class="section-label">Learning</span>
+        <h2 class="section-title">My Education</h2>
+    </div>
+
+    <div class="experience-grid">
+        <!-- University -->
+        <div class="exp-card reveal">
+            <h3>Lovely Professional University</h3>
+            <div class="exp-role">B.Tech in Computer Science and Engineering</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> August 2023 - Present</div>
+            <p>Currently pursuing my Bachelor's degree with a focus on core computer science subjects, data structures,
+                and algorithms. Maintaining a strong academic record with a current CGPA of <strong>6.87</strong>.</p>
+        </div>
+
+        <!-- High School (12th) -->
+        <div class="exp-card reveal">
+            <h3>Balaju School of Engineering</h3>
+            <div class="exp-role">Diploma in Electrical</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> March 2020 - Augest 2023</div>
+            <p>Completed my Diploma education in Electrical stream. Secured <strong>67.8%</strong> in the final
+                board examinations.</p>
+        </div>
+
+        <!-- School (10th) -->
+        <div class="exp-card reveal">
+            <h3>Apex Academy School</h3>
+            <div class="exp-role">Secondary Education Examination (Class X)</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> March 2019 - March 2020</div>
+            <p>Completed my secondary education with a focus on foundational subjects. Secured <strong>3.0 GPA</strong> in
+                the final board examinations.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== EXPERIENCE SECTION ===== -->
+<section class="section experience-section">
+    <div class="section-header reveal">
+        <span class="section-label">Experience</span>
+        <h2 class="section-title">My Journey So Far</h2>
+    </div>
+
+    <div class="experience-grid">
+        <!-- Training 2: Algotutor (LPU Winter PEP) -->
+        <div class="exp-card reveal">
+            <h3>Algotutor <span style="font-size: 0.8rem; color: var(--accent); font-weight: 500;">(LPU Winter PEP
+                    Training)</span></h3>
+            <div class="exp-role">Winter Training — Python Full Stack + Cloud Computing</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> January 2026 – February 2026</div>
+            <p>Comprehensive training covering Python fundamentals (functions, conditional statements, exception
+                handling, OOP), followed by full-stack web development with Django and REST APIs. Gained hands-on
+                experience with CI/CD using GitHub Actions, containerization with Docker, and cloud computing concepts.
+                Built and deployed multiple real-world applications throughout the program.</p>
+            <div style="margin-top: 12px;">
+                <a href="https://github.com/Arunsah56/PEP-winter-Training" target="_blank"
+                    style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--border); color: var(--text-primary); transition: var(--transition);">
+                    <i class="fa-brands fa-github"></i> View on GitHub
+                </a>
+            </div>
+        </div>
+
+        <!-- Training 1: Allsoft Solutions (IBM) -->
+        <div class="exp-card reveal">
+            <h3>Allsoft Solutions <span style="font-size: 0.8rem; color: var(--accent); font-weight: 500;">(Partnered
+                    with IBM)</span></h3>
+            <div class="exp-role">Industry Training — AI & Machine Learning</div>
+            <div class="exp-duration"><i class="fa-regular fa-calendar"></i> June 2025 – July 2025</div>
+            <p>Performed Exploratory Data Analysis (EDA) using NumPy and Pandas, reducing data preprocessing time by
+                15%. Developed, trained, and evaluated ML models — including Linear Regression, Decision Trees, K-Means,
+                and Ensemble Methods using Scikit-learn, achieving a 10% improvement in model accuracy. Applied feature
+                engineering techniques that enhanced predictive model performance by 20%.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header reveal">
+        <span class="section-label">Portfolio</span>
+        <h1 class="section-title">My Projects</h1>
+    </div>
+
+    <div class="projects-grid">
+        <!-- Project 1: Online Mentor Platform -->
+        <div class="project-card reveal">
+            <div class="project-card-image">
+                <i class="fa-solid fa-users-between-lines"></i>
+            </div>
+            <div class="project-card-body">
+                <h3>Online Mentor Platform</h3>
+                <p>An ML-powered mentor–mentee matching platform built with Python. Developed using Exploratory Data
+                    Analysis (EDA) to reduce data preprocessing time by 18%. Built a clustering-based recommendation
+                    model that analyzes user interests, skills, and expertise to improve match accuracy by approximately
+                    20%. Implemented K-Means clustering, TF-IDF vectorization, and robust data preprocessing pipelines,
+                    then integrated the model into an interactive web application using Streamlit — improving user
+                    interaction efficiency by 30%.</p>
+
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>Machine Learning</span>
+                    <span>K-Means</span>
+                    <span>TF-IDF</span>
+                    <span>Streamlit</span>
+                    <span>EDA</span>
+                </div>
+
+                <div class="project-links">
+                    <a href="https://github.com/abhay6205/mentor-mentee_matching" target="_blank">
+                        <i class="fa-brands fa-github"></i> Code
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project 2: Real-Time Process Monitoring Dashboard -->
+        <div class="project-card reveal">
+            <div class="project-card-image">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="project-card-body">
+                <h3>Real-Time Process Monitoring Dashboard</h3>
+                <p>A real-time system monitoring dashboard that displays live process states, CPU load, and memory usage
+                    — enabling administrators to detect issues 30% faster. Designed a cross-platform graphical user
+                    interface in Python using Tkinter, integrating modules like time, os, and psutil for seamless system
+                    monitoring. Optimized dashboard performance by 10% through efficient process filtering, configurable
+                    refresh rates, and time-series tracking for improved responsiveness and user experience.</p>
+
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>Tkinter</span>
+                    <span>psutil</span>
+                    <span>System Monitoring</span>
+                    <span>GUI</span>
+                </div>
+
+                <div class="project-links">
+                    <a href="https://github.com/abhay6205/Real-Time-Process-Management-Dashboard" target="_blank">
+                        <i class="fa-brands fa-github"></i> Code
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
