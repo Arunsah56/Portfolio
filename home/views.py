@@ -19,23 +19,32 @@ def _handle_contact_form(request):
 
         # Send email notification to admin
         subject = f'New Contact Message from {contact.name}'
-        body = (
-            f"Name: {contact.name}\n"
-            f"Email: {contact.email}\n"
-            f"Message:\n{contact.message}\n"
-        )
+        html_body = f"""
+        <html>
+            <body>
+                <h2>New Contact Message</h2>
+                <p><strong>Name:</strong> {contact.name}</p>
+                <p><strong>Email:</strong> {contact.email}</p>
+                <p><strong>Message:</strong></p>
+                <p>{contact.message.replace(chr(10), '<br>')}</p>
+            </body>
+        </html>
+        """
+        
         try:
             send_mail(
                 subject,
-                body,
+                f"Name: {contact.name}\nEmail: {contact.email}\nMessage:\n{contact.message}",
                 settings.DEFAULT_FROM_EMAIL,
                 [settings.EMAIL_HOST_USER],
                 fail_silently=False,
+                html_message=html_body,
             )
             logger.info(f'✓ Admin notification email sent for message from {contact.email}')
         except Exception as e:
             # Email sending failed but the message is already saved in DB
-            logger.error(f'✗ Failed to send admin email: {str(e)}')
+            logger.error(f'✗ Failed to send admin email: {type(e).__name__}: {str(e)}')
+            messages.warning(request, f'Message saved but admin notification failed: {str(e)}')
 
         # Send confirmation email to the visitor
         try:
@@ -45,8 +54,7 @@ def _handle_contact_form(request):
             )
             send_mail(
                 'Thank You for Reaching Out — Arun Sah\'s Portfolio',
-                f'Hi {contact.name}, thank you for visiting my portfolio and reaching out. '
-                f'I have received your message and will get back to you soon.',
+                f'Hi {contact.name}, thank you for visiting my portfolio and reaching out. I have received your message and will get back to you soon.',
                 settings.DEFAULT_FROM_EMAIL,
                 [contact.email],
                 fail_silently=False,
@@ -55,7 +63,8 @@ def _handle_contact_form(request):
             logger.info(f'✓ Confirmation email sent to {contact.email}')
         except Exception as e:
             # Confirmation email failed but the message is already saved
-            logger.error(f'✗ Failed to send confirmation email to {contact.email}: {str(e)}')
+            logger.error(f'✗ Failed to send confirmation email to {contact.email}: {type(e).__name__}: {str(e)}')
+            messages.warning(request, f'Your message was saved but confirmation email failed: {str(e)}')
 
         return True, form
     return False, form
@@ -63,12 +72,17 @@ def _handle_contact_form(request):
 
 def home(request):
     if request.method == 'POST':
-        success, _ = _handle_contact_form(request)
+        success, form = _handle_contact_form(request)
         if success:
             messages.success(request, 'Your message has been sent successfully!')
-        return redirect('home')
+            return redirect('home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = ContactForm()
 
     context = {
+        'form': form,
         'educations': Education.objects.all(),
         'experiences': Experience.objects.all(),
         'projects': Project.objects.all(),

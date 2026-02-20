@@ -11,16 +11,19 @@ class ContactForm(forms.ModelForm):
                 'placeholder': 'Enter your name',
                 'required': True,
                 'id': 'name',
+                'class': 'form-input',
             }),
             'email': forms.EmailInput(attrs={
                 'placeholder': 'Enter your email',
                 'required': True,
                 'id': 'email',
+                'class': 'form-input',
             }),
             'message': forms.Textarea(attrs={
                 'placeholder': 'Write your message here...',
                 'required': True,
                 'id': 'message',
+                'class': 'form-textarea',
             }),
         }
         labels = {

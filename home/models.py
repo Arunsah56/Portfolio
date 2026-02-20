@@ -42,6 +42,7 @@ class Project(models.Model):
     github_link = models.URLField(blank=True)
     live_link = models.URLField(blank=True)
     image = models.ImageField(upload_to='projects/', blank=True, null=True)
+    date_created = models.DateField(auto_now_add=True)
     order = models.PositiveIntegerField(default=0, help_text='Lower numbers appear first')
 
     class Meta:
