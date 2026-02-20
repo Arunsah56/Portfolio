@@ -1,138 +1,275 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Project, Skill, Contact  # Make sure these models exist
-
-def home(request):
-    # Try to get projects, but handle if table doesn't exist yet
-    try:
-        projects = Project.objects.all()[:3]
-    except:
-        projects = []
-    
-    try:
-        skills = Skill.objects.all()
-    except:
-        skills = []
-    
-    context = {
-        'projects': projects,
-        'skills': skills,
-    }
-    return render(request, 'home.html', context)  # Changed path
-
-def projects(request):
-    try:
-        projects = Project.objects.all().order_by('-date_created')
-    except:
-        projects = []
-    return render(request, 'projects.html', {'projects': projects})
-
-from django.core.mail import send_mail   # ⭐ ADDED IMPORT
-from django.conf import settings   
-
-# def contact(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         subject = request.POST.get('subject')
-#         message = request.POST.get('message')
-#         if not name or not email or not message:
-#             messages.error(request, 'Please fill all required fields.')
-#             return redirect('contact')
-#         try:
-#             Contact.objects.create(
-#                 name=name,
-#                 email=email,
-#                 message=message
-#             )
-#             send_mail(
-#                 subject=f'New Contact Message from {name}',
-#                 message=f"You received a new contact message: Name: {name} Email: {email} Message: {message}",
-#                 from_email=settings.EMAIL_HOST_USER,
-#                 recipient_list=[settings.EMAIL_HOST_USER],  # sends to YOU
-#             )
-#             messages.success(request, 'Your message has been sent successfully!')
-#         except:
-#             messages.error(request, 'There was an error sending your message.')
-        
-#         return redirect('contact')
-    
-#     return render(request, 'contact.html')
-
-from .forms import ContactForm   # 🟢 NEW IMPORT
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Contact
-# def contact(request):
-#     if request.method == 'POST':
-#         form = ContactForm(request.POST)   # 🟢 NEW
+from django.template.loader import render_to_string
+import logging
 
-#         if form.is_valid():   # 🟢 NEW VALIDATION
-#             name = form.cleaned_data['name']
-#             email = form.cleaned_data['email']
-#             subject = form.cleaned_data['subject']
-#             message = form.cleaned_data['message']
-#             # contact = form.save() 
+from .models import Project, Experience, ContactMessage, Blog, Education
+from .forms import ContactForm
 
-#             try:
-#                 Contact.objects.create(
-#                     name=name,
-#                     email=email,
-#                     subject=subject,
-#                     message=message
-#                 )
+logger = logging.getLogger(__name__)
 
-#                 send_mail(
-#                     subject=f'New Contact Message from {name}',
-#                     message=f""" Hi {name}, Thank you for contacting me. Your message has been received. I will get back to you soon. Message: {message}""",
-#                     from_email=settings.EMAIL_HOST_USER,
-#                     recipient_list=[settings.EMAIL_HOST_USER],
-#                 )
 
-#                 messages.success(request, 'Your message has been sent successfully!')
-#                 return redirect('contact')
+def _handle_contact_form(request):
+    """Validate, save to DB, and send email. Returns (success: bool, form)."""
+    form = ContactForm(request.POST)
+    if form.is_valid():
+        contact = form.save()
 
-#             except Exception as e:
-#                 messages.error(request, 'There was an error sending your message.')
+        # Send email notification to admin
+        subject = f'New Contact Message from {contact.name}'
+        body = (
+            f"Name: {contact.name}\n"
+            f"Email: {contact.email}\n"
+            f"Message:\n{contact.message}\n"
+        )
+        try:
+            send_mail(
+                subject,
+                body,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+            logger.info(f'✓ Admin notification email sent for message from {contact.email}')
+        except Exception as e:
+            # Email sending failed but the message is already saved in DB
+            logger.error(f'✗ Failed to send admin email: {str(e)}')
 
-#     else:
-#         form = ContactForm()   # 🟢 NEW
+        # Send confirmation email to the visitor
+        try:
+            html_content = render_to_string(
+                'main/emails/confirmations_email.html',
+                {'name': contact.name, 'message': contact.message},
+            )
+            send_mail(
+                'Thank You for Reaching Out — Arun Sah\'s Portfolio',
+                f'Hi {contact.name}, thank you for visiting my portfolio and reaching out. '
+                f'I have received your message and will get back to you soon.',
+                settings.DEFAULT_FROM_EMAIL,
+                [contact.email],
+                fail_silently=False,
+                html_message=html_content,
+            )
+            logger.info(f'✓ Confirmation email sent to {contact.email}')
+        except Exception as e:
+            # Confirmation email failed but the message is already saved
+            logger.error(f'✗ Failed to send confirmation email to {contact.email}: {str(e)}')
 
-#     return render(request, 'contact.html', {'form': form})   # 🟢 MODIFIED
+        return True, form
+    return False, form
+
+
+def home(request):
+    if request.method == 'POST':
+        success, _ = _handle_contact_form(request)
+        if success:
+            messages.success(request, 'Your message has been sent successfully!')
+        return redirect('home')
+
+    context = {
+        'educations': Education.objects.all(),
+        'experiences': Experience.objects.all(),
+        'projects': Project.objects.all(),
+        'blogs': Blog.objects.filter(is_published=True),
+    }
+    return render(request, 'main/home.html', context)
+
+
+def about(request):
+    experiences = Experience.objects.all()
+    return render(request, 'main/about.html', {'experiences': experiences})
+
+
+def projects(request):
+    projects = Project.objects.all()
+    return render(request, 'main/projects.html', {'projects': projects})
+
 
 def contact(request):
-    if request.method == "POST":
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            user_email = form.cleaned_data["email"]
-            name = form.cleaned_data["name"]
-            message = form.cleaned_data["message"]
-            # Save the contact message to the database
-
-            Contact.objects.create(
-                name=name,
-                email=user_email, 
-                message=message
-                )
-            # Send auto greeting email
-            send_mail(
-                subject="Thanks for contacting us!",
-                message=f"Hi {name},\n\nThank you for reaching out. We will get back to you soon 😊",
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[user_email],
-            )
-
+    if request.method == 'POST':
+        success, form = _handle_contact_form(request)
+        if success:
             messages.success(request, 'Your message has been sent successfully!')
             return redirect('contact')
-
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = ContactForm()
 
-    return render(request, "contact.html", {"form": form})
+    return render(request, 'main/contact.html', {'form': form})
 
-def about(request):
-    try:
-        skills = Skill.objects.all()
-    except:
-        skills = []
-    return render(request, 'about.html', {'skills': skills})
+
+def blog(request):
+    blogs = Blog.objects.filter(is_published=True)
+    return render(request, 'main/blog.html', {'blogs': blogs})
+
+
+# ============================================================
+# CUSTOM ADMIN PANEL VIEWS
+# ============================================================
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from .models import ContactMessage
+from .admin_forms import ProjectForm, BlogForm, EducationForm, ExperienceForm
+
+# Model configuration map for DRY CRUD
+MODEL_CONFIG = {
+    'project': {
+        'model': Project,
+        'form': ProjectForm,
+        'icon': 'fa-folder-open',
+        'label': 'Project',
+    },
+    'blog': {
+        'model': Blog,
+        'form': BlogForm,
+        'icon': 'fa-pen-to-square',
+        'label': 'Blog Post',
+    },
+    'education': {
+        'model': Education,
+        'form': EducationForm,
+        'icon': 'fa-graduation-cap',
+        'label': 'Education',
+    },
+    'experience': {
+        'model': Experience,
+        'form': ExperienceForm,
+        'icon': 'fa-briefcase',
+        'label': 'Experience',
+    },
+    'contactmessage': {
+        'model': ContactMessage,
+        'form': None,
+        'icon': 'fa-envelope',
+        'label': 'Contact Message',
+    },
+}
+
+
+def _admin_context():
+    """Common context for all admin pages (sidebar counts)."""
+    return {
+        'project_count': Project.objects.count(),
+        'blog_count': Blog.objects.count(),
+        'education_count': Education.objects.count(),
+        'experience_count': Experience.objects.count(),
+        'message_count': ContactMessage.objects.count(),
+    }
+
+
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_dashboard')
+
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('admin_dashboard')
+        else:
+            error = 'Invalid credentials or insufficient permissions.'
+
+    return render(request, 'main/admin_login.html', {'error': error})
+
+
+@login_required(login_url='admin_login')
+def admin_logout(request):
+    logout(request)
+    return redirect('home')
+
+
+@login_required(login_url='admin_login')
+def admin_dashboard(request):
+    context = _admin_context()
+    context.update({
+        'active_tab': 'dashboard',
+        'projects': Project.objects.all(),
+        'blogs': Blog.objects.all(),
+        'educations': Education.objects.all(),
+        'experiences': Experience.objects.all(),
+        'contact_messages': ContactMessage.objects.all().order_by('-created_at'),
+    })
+    return render(request, 'main/admin_dashboard.html', context)
+
+
+@login_required(login_url='admin_login')
+def admin_add(request, model_name):
+    config = MODEL_CONFIG.get(model_name)
+    if not config or not config['form']:
+        return redirect('admin_dashboard')
+
+    if request.method == 'POST':
+        form = config['form'](request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{config["label"]} added successfully!')
+            return redirect('admin_dashboard')
+    else:
+        form = config['form']()
+
+    context = _admin_context()
+    context.update({
+        'form': form,
+        'form_title': f'Add {config["label"]}',
+        'form_icon': config['icon'],
+        'submit_label': f'Add {config["label"]}',
+        'active_tab': f'{model_name}s',
+    })
+    return render(request, 'main/admin_form.html', context)
+
+
+@login_required(login_url='admin_login')
+def admin_edit(request, model_name, pk):
+    config = MODEL_CONFIG.get(model_name)
+    if not config or not config['form']:
+        return redirect('admin_dashboard')
+
+    obj = get_object_or_404(config['model'], pk=pk)
+
+    if request.method == 'POST':
+        form = config['form'](request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'{config["label"]} updated successfully!')
+            return redirect('admin_dashboard')
+    else:
+        form = config['form'](instance=obj)
+
+    context = _admin_context()
+    context.update({
+        'form': form,
+        'form_title': f'Edit {config["label"]}',
+        'form_icon': config['icon'],
+        'submit_label': 'Save Changes',
+        'active_tab': f'{model_name}s',
+    })
+    return render(request, 'main/admin_form.html', context)
+
+
+@login_required(login_url='admin_login')
+def admin_delete(request, model_name, pk):
+    config = MODEL_CONFIG.get(model_name)
+    if not config:
+        return redirect('admin_dashboard')
+
+    obj = get_object_or_404(config['model'], pk=pk)
+
+    if request.method == 'POST':
+        obj.delete()
+        messages.success(request, f'{config["label"]} deleted successfully!')
+        return redirect('admin_dashboard')
+
+    context = _admin_context()
+    context.update({
+        'object_name': config['label'],
+        'object_title': str(obj),
+        'active_tab': f'{model_name}s',
+    })
+    return render(request, 'main/admin_delete.html', context)

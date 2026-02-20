@@ -1,14 +1,30 @@
-# from django import forms
-
-# class ContactForm(forms.Form):
-#     name = forms.CharField( max_length=100, widget=forms.TextInput(attrs={'id': 'name'}))
-#     email = forms.EmailField(widget=forms.EmailInput(attrs={'id': 'email'}))
-#     subject = forms.CharField( required=False, widget=forms.TextInput(attrs={'id': 'subject'}))
-#     message = forms.CharField(widget=forms.Textarea(attrs={'id': 'message'}))
-
 from django import forms
+from .models import ContactMessage
 
-class ContactForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    message = forms.CharField(widget=forms.Textarea)
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Enter your name',
+                'required': True,
+                'id': 'name',
+            }),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'Enter your email',
+                'required': True,
+                'id': 'email',
+            }),
+            'message': forms.Textarea(attrs={
+                'placeholder': 'Write your message here...',
+                'required': True,
+                'id': 'message',
+            }),
+        }
+        labels = {
+            'name': 'Your Name',
+            'email': 'Your Email',
+            'message': 'Message',
+        }
