@@ -211,9 +211,7 @@
     <div class="experience-grid">
         {% for exp in experiences %}
         <div class="exp-card reveal">
-            <h3>{{ exp.organization }}{% if exp.partner_label %} <span
-                    style="font-size: 0.8rem; color: var(--accent); font-weight: 500;">({{ exp.partner_label
-                    }})</span>{% endif %}</h3>
+            <h3>{{ exp.organization }}{% if exp.partner_label %} <span style="font-size: 0.8rem; color: var(--accent); font-weight: 500;">({{ exp.partner_label }})</span>{% endif %}</h3>
             <div class="exp-role">{{ exp.role }}</div>
             <div class="exp-duration"><i class="fa-regular fa-calendar"></i> {{ exp.duration }}</div>
             <p>{{ exp.description }}</p>
