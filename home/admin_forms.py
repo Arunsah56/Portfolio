@@ -1,5 +1,33 @@
 from django import forms
-from .models import Project, Blog, Education, Experience
+from .models import Project, Blog, Education, Experience, Profile
+from .validators import validate_profile_image
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture']
+        widgets = {
+            'profile_picture': forms.FileInput(attrs={
+                'accept': 'image/*',
+                'class': 'profile-picture-input',
+            }),
+        }
+    
+    def clean_profile_picture(self):
+        """
+        Additional validation for profile picture.
+        Provides helpful error messages to the user.
+        """
+        profile_picture = self.cleaned_data.get('profile_picture')
+        
+        if profile_picture:
+            try:
+                validate_profile_image(profile_picture)
+            except forms.ValidationError as e:
+                raise forms.ValidationError(str(e))
+        
+        return profile_picture
 
 
 class ProjectForm(forms.ModelForm):

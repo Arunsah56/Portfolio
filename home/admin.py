@@ -1,11 +1,57 @@
 from django.contrib import admin
-from .models import Education, Experience, Project, Blog, ContactMessage
+from django.utils.html import format_html
+from django.urls import reverse
+from .models import Profile, Education, Experience, Project, Blog, ContactMessage
+from .admin_forms import ProfileForm
 
 
 # ─── Site Branding ───────────────────────────────────────────────────────
 admin.site.site_title = "Abhay's Portfolio"
 admin.site.site_header = "Abhay's Portfolio — Admin"
 admin.site.index_title = "Manage Your Content"
+
+
+# ─── Profile ─────────────────────────────────────────────────────────────
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    form = ProfileForm
+    fields = ('profile_picture', 'profile_preview', 'image_info', 'updated_at')
+    readonly_fields = ('profile_preview', 'image_info', 'updated_at')
+
+    def profile_preview(self, obj):
+        """Display image preview in admin"""
+        if obj.profile_picture:
+            return format_html(
+                '<img src="{}" style="max-width: 300px; max-height: 300px; border-radius: 8px; border: 2px solid #ddd;" />',
+                obj.profile_picture.url
+            )
+        return "No image uploaded"
+    profile_preview.short_description = 'Preview'
+
+    def image_info(self, obj):
+        """Display image optimization information"""
+        if obj.profile_picture:
+            info = f"""
+            <div style="background-color: #f0f0f0; padding: 15px; border-radius: 5px; font-family: monospace;">
+                <strong>Image Information:</strong><br>
+                Size: {obj.get_file_size_kb()} KB<br>
+                Dimensions: {obj.get_dimensions_display()}<br>
+                Updated: {obj.updated_at.strftime('%Y-%m-%d %H:%M:%S')}<br>
+                <br>
+                <span style="color: green;">✓ Optimized & Compressed</span>
+            </div>
+            """
+            return format_html(info)
+        return format_html('<span style="color: #999;">Upload an image to see information</span>')
+    image_info.short_description = 'Image Details'
+
+    def has_add_permission(self, request):
+        # Allow adding only if no profile exists
+        return not Profile.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        # Prevent deletion
+        return False
 
 
 # ─── Education ───────────────────────────────────────────────────────────
