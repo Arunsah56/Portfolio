@@ -5,7 +5,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 import logging
 
-from .models import Project, Experience, ContactMessage, Blog, Education
+from .models import Project, Experience, ContactMessage, Blog, Education, Profile
 from .forms import ContactForm
 
 logger = logging.getLogger(__name__)
@@ -83,6 +83,7 @@ def home(request):
 
     context = {
         'form': form,
+        'profile': Profile.objects.first(),
         'educations': Education.objects.all(),
         'experiences': Experience.objects.all(),
         'projects': Project.objects.all(),
@@ -93,7 +94,11 @@ def home(request):
 
 def about(request):
     experiences = Experience.objects.all()
-    return render(request, 'main/about.html', {'experiences': experiences})
+    profile = Profile.objects.first()
+    return render(request, 'main/about.html', {
+        'experiences': experiences,
+        'profile': profile
+    })
 
 
 def projects(request):
