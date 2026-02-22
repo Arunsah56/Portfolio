@@ -2,6 +2,7 @@ from django.urls import path
 from . import api_views
 
 urlpatterns = [
+    path('profile/', api_views.ProfileRetrieveAPI.as_view(), name='api-profile'),
     path('projects/', api_views.ProjectListAPI.as_view(), name='api-projects'),
     path('experiences/', api_views.ExperienceListAPI.as_view(), name='api-experiences'),
     path('educations/', api_views.EducationListAPI.as_view(), name='api-educations'),

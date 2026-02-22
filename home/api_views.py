@@ -4,14 +4,23 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from .models import Project, Experience, Blog, Education
+from .models import Project, Experience, Blog, Education, Profile
 from .serializers import (
+    ProfileSerializer,
     ProjectSerializer,
     ExperienceSerializer,
     BlogSerializer,
     ContactMessageSerializer,
     EducationSerializer,
 )
+
+
+class ProfileRetrieveAPI(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        return Profile.objects.first() or None
 
 
 class ProjectListAPI(generics.ListAPIView):
